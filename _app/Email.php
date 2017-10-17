@@ -4,30 +4,27 @@ namespace Notification;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-/**
-*  Email: Notification
- */
 class Email {
 
   //PRIVADAS
   private $mail =\stdClass::class;
 
-  public function __construct() {
+  public function __construct($smtpDebug, $host, $user, $pass, $smtpSecure, $port, $setFromEmail, $setFromName) {
     $this->mail = new PHPMailer(true);
     //Server settings
-     $this->mail->SMTPDebug = 2;                                 // Enable verbose debug output
+     $this->mail->SMTPDebug = $smtpDebug;                        // Enable verbose debug output
      $this->mail->isSMTP();                                      // Set mailer to use SMTP
-     $this->mail->Host = 'mail.buscafoz.com.br';  // Specify main and backup SMTP servers
-     $this->mail->SMTPAuth = true;                               // Enable SMTP authentication
-     $this->mail->Username = 'suporte@buscafoz.com.br';                 // SMTP username
-     $this->mail->Password = ';v47PXPECML(';                           // SMTP password
-     $this->mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
-     $this->mail->Port = 465;
+     $this->mail->Host = $host;                                 // Specify main and backup SMTP servers
+     $this->mail->SMTPAuth = true;                              // Enable SMTP authentication
+     $this->mail->Username = $user;                             // SMTP username
+     $this->mail->Password = $pass;                             // SMTP password
+     $this->mail->SMTPSecure = $smtpSecure;                    // Enable TLS encryption, `ssl` also accepted
+     $this->mail->Port = $port;
      $this->mail->Charset = 'Utf-8';
      $this->mail->setLanguage('br');
      $this->mail->isHTML(true);
      //Recipients
-     $this->mail->setFrom('suporte@buscafoz.com.br', 'Rikardo Andre Vieira');
+     $this->mail->setFrom($setFromEmail, $setFromName);
   }
 
   public function sendMail($subject, $body, $replyEmail, $replyName, $addressEmail, $addressName)
